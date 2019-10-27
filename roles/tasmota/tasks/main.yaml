@@ -27,7 +27,8 @@
     ip: hostvars[inventory_hostname]['ansible_env'].SSH_CONNECTION.split(' ')[2]
 
 - name: scan ITEAD
-  command: iwlist wlan0 scan | grep ITEAD
+  command: iwlist wlan0 scan 
+#| grep ITEAD | cut -d'"' -f 2
 
 - name: 
   command: 'nmcli device wifi con "ITEAD-10001f1908" password "12345678"'
