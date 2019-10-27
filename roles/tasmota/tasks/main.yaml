@@ -22,6 +22,9 @@
   become_user: pi
   become: yes
 
+- name: get ip
+  set_fact:
+    ip: hostvars[inventory_hostname]['ansible_env'].SSH_CONNECTION.split(' ')[2]
 
 - name: Copy wifi script
   copy:
