@@ -10,11 +10,11 @@
     name:       [ "paho-mqtt", "pyaes", "tornado" ]
     executable: pip3
 
-- name: tuya-convert
+- name: unarchive tuya-convert 
   unarchive:
     src: node-v13.0.1-linux-armv7l.tar.gz
     dest: ~/tuya-convert
-  become_user: rpi
+  become_user: pi
   become: yes
 
 - name: my ip
@@ -23,12 +23,14 @@
 
 - name: install_prereq.sh
   command: install_prereq.sh
-  become_user: rpi
+  args:
+    chdir: ~/tuya-convert
+  become_user: pi
   become: yes
 
 - name: start
   command: "python3 sonota.py --serving-host {{ ip }} --wifi-ssid revenberg-24G --wifi-password {{ ?? }}"
   args:
-    chdir: ~
-  become_user: rpi
+    chdir: ~/tuya-convert
+  become_user: pi
   become: yes
