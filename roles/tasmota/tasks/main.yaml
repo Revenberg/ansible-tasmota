@@ -10,9 +10,16 @@
     name:       [ "paho-mqtt", "pyaes", "tornado" ]
     executable: pip3
 
-- name: unarchive tuya-convert 
+- name: unarchive node
   unarchive:
     src: node-v13.0.1-linux-armv7l.tar.gz
+    dest: /usr/local/
+  become_user: pi
+  become: yes
+
+- name: unarchive tuya-convert
+  unarchive:
+    src: tuya-convert.zip
     dest: ~/tuya-convert
   become_user: pi
   become: yes
