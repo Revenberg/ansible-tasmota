@@ -8,18 +8,27 @@
 - name: "install pip packages"
   pip:
     name:       [ "paho-mqtt", "pyaes", "tornado" ]
-    executable: pip-3.3
+    executable: pip3
 
 - name: tuya-convert
   unarchive:
     src: node-v13.0.1-linux-armv7l.tar.gz
     dest: ~/tuya-convert
+  become_user: rpi
+  become: yes
 
 - name: my ip
   set_fact:
     ip: hostvars[inventory_hostname]['ansible_env'].SSH_CONNECTION.split(' ')[2]
 
+- name: install_prereq.sh
+  command: install_prereq.sh
+  become_user: rpi
+  become: yes
+
 - name: start
   command: "python3 sonota.py --serving-host {{ ip }} --wifi-ssid revenberg-24G --wifi-password {{ ?? }}"
   args:
     chdir: ~
+  become_user: rpi
+  become: yes
