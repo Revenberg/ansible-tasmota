@@ -36,7 +36,5 @@
 
 - name: scan wifi
   command: '/home/pi/wifi.sh {{ ip }} {{ wifi }} {{ password }} 1>/home/pi/tasmota.log'
-  async: 1
-  poll: 0
   become_user: pi
   become: yes
