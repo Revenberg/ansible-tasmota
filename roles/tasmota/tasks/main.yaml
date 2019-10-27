@@ -1,13 +1,13 @@
 - name: "install apt-get packages"
   apt:
-    name: [ "dnsmasq", "hostapd", "screen", "python3-pip", "python3-setuptools", "python3-wheel", "mosquitto", "nodejs", "haveged", "git" ]
+    name: [ "dnsmasq", "hostapd", "screen", "python3-pip", "python3-setuptools", "python3-wheel", "mosquitto", "nodejs", "haveged", "git", "curl", "build-essential", "python-pip", "python3-pip", "python-setuptools", "python3-setuptools", "python-wheel", "python3-wheel", "python-dev", "python3-dev", "mosquitto", "haveged", "net-tools" "libssl-dev" ]
     state: present
     update_cache: yes
     cache_valid_time: 3600
 
 - name: "install pip packages"
   pip:
-    name:       [ "paho-mqtt", "pyaes", "tornado" ]
+    name:       [ "paho-mqtt", "httplib2", "netifaces", "pyaes", "tornado", "pycrypto", "git+https://github.com/M4dmartig4n/sslpsk.git" ]
     executable: pip3
 
 - name: unarchive node
@@ -15,10 +15,10 @@
     src: node-v13.0.1-linux-armv7l.tar.gz
     dest: /usr/local/
 
-- name: unarchive SonOTA
+- name: unarchive SonOTA-master
   unarchive:
     src: SonOTA.zip
-    dest: ~/SonOTA
+    dest: ~
   become_user: pi
   become: yes
 
@@ -26,16 +26,15 @@
   set_fact:
     ip: hostvars[inventory_hostname]['ansible_env'].SSH_CONNECTION.split(' ')[2]
 
-- name: install_prereq.sh
-  command: ~/SonOTA/install_prereq.sh
-  args:
-    chdir: ~/SonOTA
-  become_user: pi
-  become: yes
+- name: scan ITEAD
+  command: iwlist wlan0 scan | grep ITEAD
+
+- name: 
+  command: 'nmcli device wifi con "ITEAD-10001f1908" password "12345678"'
 
 - name: start
-  command: "python3 ~/SonOTA/sonota.py --serving-host {{ ip }} --wifi-ssid revenberg-24G --wifi-password {{ password }}"
+  command: "python3 ~/SonOTA-master/SonOTA-master.py --serving-host {{ ip }} --wifi-ssid revenberg-24G --wifi-password {{ password }}"
   args:
-    chdir: ~/SonOTA
+    chdir: ~/SonOTA-master
   become_user: pi
   become: yes
