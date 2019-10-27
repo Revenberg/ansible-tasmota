@@ -29,11 +29,13 @@
 - name: Copy wifi script
   copy:
     src:  wifi.sh
-    dest: /var/wifi.sh
+    dest: /home/pi/wifi.sh
     mode: '750'
+  become_user: pi
+  become: yes
 
 - name: scan wifi
-  command: 'nohup /var/wifi.sh {{ ip }} {{ wifi }} {{ password }} 1>/home/pi/tasmota.log &'
+  command: '/home/pi/wifi.sh {{ ip }} {{ wifi }} {{ password }} 1>/home/pi/tasmota.log &'
   async: 1
   poll: 0
   become_user: pi
