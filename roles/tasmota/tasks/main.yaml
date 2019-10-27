@@ -22,10 +22,6 @@
   become_user: pi
   become: yes
 
-- name: get ip
-  set_fact:
-    ip: "hostvars[inventory_hostname]['ansible_env'].SSH_CONNECTION.split(' ')[2]"
-
 - name: Copy wifi script
   copy:
     src:  wifi.sh
@@ -35,6 +31,6 @@
   become: yes
 
 - name: scan wifi
-  command: '/home/pi/wifi.sh {{ ip }} {{ wifi }} {{ password }} /home/pi/tasmota.log'
+  command: '/home/pi/wifi.sh {{ wifi }} {{ password }} /home/pi/tasmota.log'
   become_user: pi
   become: yes
