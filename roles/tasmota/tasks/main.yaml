@@ -15,10 +15,10 @@
     src: node-v13.0.1-linux-armv7l.tar.gz
     dest: /usr/local/
 
-- name: unarchive tuya-convert
+- name: unarchive SonOTA
   unarchive:
-    src: tuya-convert.zip
-    dest: ~/tuya-convert
+    src: SonOTA.zip
+    dest: ~/SonOTA
   become_user: pi
   become: yes
 
@@ -27,15 +27,15 @@
     ip: hostvars[inventory_hostname]['ansible_env'].SSH_CONNECTION.split(' ')[2]
 
 - name: install_prereq.sh
-  command: ~/tuya-convert/install_prereq.sh
+  command: ~/SonOTA/install_prereq.sh
   args:
-    chdir: ~/tuya-convert
+    chdir: ~/SonOTA
   become_user: pi
   become: yes
 
 - name: start
-  command: "python3 ~/tuya-convert/sonota.py --serving-host {{ ip }} --wifi-ssid revenberg-24G --wifi-password {{ password }}"
+  command: "python3 ~/SonOTA/sonota.py --serving-host {{ ip }} --wifi-ssid revenberg-24G --wifi-password {{ password }}"
   args:
-    chdir: ~/tuya-convert
+    chdir: ~/SonOTA
   become_user: pi
   become: yes
