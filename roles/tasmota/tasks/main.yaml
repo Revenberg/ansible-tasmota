@@ -18,13 +18,24 @@
 - name: unarchive SonOTA.zip
   unarchive:
     src: SonOTA.zip
-    dest: ~/SonOTA
+    dest: /home/pi
   become_user: pi
   become: yes
+
+
+- name: Copy wifi script
+  copy:
+    src:  wifi.sh
+    dest: /var/wifi.sh
+    mode: '750'
+
+- name: scan wifi
+  command: 'nohub /var/wifi.sh &'
 
 - name: my ip
   set_fact:
     ip: hostvars[inventory_hostname]['ansible_env'].SSH_CONNECTION.split(' ')[2]
+
 
 - name: scan ITEAD
   command: iwlist wlan0 scan 
@@ -33,9 +44,9 @@
 - name: 
   command: 'nmcli device wifi con "ITEAD-10001f1908" password "12345678"'
 
-- name: start
-  command: "python3 ~/SonOTA-master/SonOTA-master.py --serving-host {{ ip }} --wifi-ssid revenberg-24G --wifi-password {{ password }}"
+- name: 
+  command: "python3 /home/pi/SonOTA-master/SonOTA.py --serving-host {{ ip }} --wifi-ssid {{ wifi }} --wifi-password {{ password }}"
   args:
-    chdir: ~/SonOTA-master
+    chdir: /home/pi/SonOTA-master
   become_user: pi
   become: yes
