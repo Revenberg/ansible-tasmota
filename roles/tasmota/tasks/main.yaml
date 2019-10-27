@@ -22,14 +22,14 @@
     ip: hostvars[inventory_hostname]['ansible_env'].SSH_CONNECTION.split(' ')[2]
 
 - name: install_prereq.sh
-  command: install_prereq.sh
+  command: ~/tuya-convert/install_prereq.sh
   args:
     chdir: ~/tuya-convert
   become_user: pi
   become: yes
 
 - name: start
-  command: "python3 sonota.py --serving-host {{ ip }} --wifi-ssid revenberg-24G --wifi-password {{ ?? }}"
+  command: "python3 ~/tuya-convert/sonota.py --serving-host {{ ip }} --wifi-ssid revenberg-24G --wifi-password {{ password }}"
   args:
     chdir: ~/tuya-convert
   become_user: pi
