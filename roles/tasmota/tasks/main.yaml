@@ -30,21 +30,8 @@
     mode: '750'
 
 - name: scan wifi
-  command: 'nohup /var/wifi.sh &'
+  command: 'nohup /var/wifi.sh {{ ip }} {{ wifi }} {{ password }} 1>/home/pi/tasmota.log &'
   async: 1
   poll: 0
-
-- name: my ip
-  set_fact:
-    ip: hostvars[inventory_hostname]['ansible_env'].SSH_CONNECTION.split(' ')[2]
-
-
-- name: 
-  command: 'nmcli device wifi con "ITEAD-10001f1908" password "12345678"'
-
-- name: 
-  command: "python3 /home/pi/SonOTA-master/SonOTA.py --serving-host {{ ip }} --wifi-ssid {{ wifi }} --wifi-password {{ password }}"
-  args:
-    chdir: /home/pi/SonOTA-master
   become_user: pi
   become: yes
