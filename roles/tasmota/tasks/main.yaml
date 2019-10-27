@@ -15,10 +15,10 @@
     src: node-v13.0.1-linux-armv7l.tar.gz
     dest: /usr/local/
 
-- name: unarchive SonOTA-master
+- name: unarchive SonOTA.zip
   unarchive:
     src: SonOTA.zip
-    dest: ~
+    dest: ~/SonOTA
   become_user: pi
   become: yes
 
